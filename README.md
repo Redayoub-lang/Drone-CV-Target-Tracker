@@ -1,24 +1,31 @@
-# Autonomous Drone Visual Target Tracker & HUD Estimator
+# Drone CV Target Tracker Engine
 
-![Python 3.x](https://img.shields.io/badge/Language-Python%203-blue.svg)
-![OpenCV](https://img.shields.io/badge/Library-OpenCV%204.x-green.svg)
-![Domain](https://img.shields.io/badge/Domain-Computer%20Vision%20%26%20Robotics-orange.svg)
-![Developer](https://img.shields.io/badge/Developer-Ayoub%20Lahmar-brightgreen.svg)
+![Python 3](https://img.shields.io/badge/Language-Python%203.10-blue)
+![Computer Vision](https://img.shields.io/badge/Domain-Computer%20Vision%20%26%20Target%20Tracking-orange)
+![Developer](https://img.shields.io/badge/Developer-Ayoub%20Lahmar-brightgreen)
 
-A real-time Computer Vision (CV) target tracking system designed for autonomous drone landing and visual servoing. Built using **Python** and **OpenCV**, this module detects objects in HSV color space, extracts frame centroid displacement vectors, and streams real-time navigation telemetry over a simulated Heads-Up Display (HUD).
+A robust computer vision target tracking pipeline designed for UAV autonomous gimbal control and visual servoing. Combines real-time object detection with a Discrete Kalman Filter to estimate target trajectories, handle brief visual occlusions, and stabilize control loops during high-speed aerial maneuvers.
 
-Developed by **Ayoub Lahmar** ([@Redayoub-lang](https://github.com/Redayoub-lang)) as part of my technical portfolio for application to the **Bachelor’s in Computer Science & Technology** program at **Jiangsu University (JSU)**.
-🚀 System Architecture & CapabilitiesReal-Time HSV Segmentation: Filters camera input using dynamic Hue-Saturation-Value boundaries to isolate targets under changing lighting conditions.Visual Servoing Offset Estimation: Computes Pixel-Displacement Error vectors relative to the camera center, providing correction inputs for drone Yaw and Pitch PID controllers.Adaptive Contouring & Noise Cancellation: Applies Morphological operations (Erosion & Dilation) to prevent false positives from background sensor noise.Flight HUD Overlay: Streams active target locking status, bounding box coordinates, error displacement, and FPS processing rates directly on the live feed.📐 Displacement Mathematics$$\Delta X = X_{target} - X_{center}$$$$\Delta Y = Y_{center} - Y_{target}$$Where $(X_{center}, Y_{center})$ represents the optical center of the camera frame, used to send flight correction commands to the flight controller.
-💻 How to RunPrerequisitesPython 3.8+OpenCV (opencv-python)NumPy (numpy)Installation & Execution
-# Clone the repository
-git clone [https://github.com/Redayoub-lang/Drone-CV-Target-Tracker.git](https://github.com/Redayoub-lang/Drone-CV-Target-Tracker.git)
-cd Drone-CV-Target-Tracker
+Implemented by **Ayoub Lahmar** ([@Redayoub-lang](https://github.com/Redayoub-lang)).
 
-# Install dependencies
-pip install opencv-python numpy
+## 📐 Mathematical Formulation
 
-# Run Tracker
-python tracker.py
+The dynamic target state vector \(\mathbf{x}_k = [x, y, v_x, v_y]^T\) and measurement vector \(\mathbf{z}_k = [z_x, z_y]^T\) are modeled via a Discrete Kalman Filter:
+
+$$
+\mathbf{x}_k = \mathbf{F} \mathbf{x}_{k-1} + \mathbf{w}_k, \quad \mathbf{w}_k \sim \mathcal{N}(0, \mathbf{Q})
+$$
+
+$$
+\mathbf{z}_k = \mathbf{H} \mathbf{x}_k + \mathbf{v}_k, \quad \mathbf{v}_k \sim \mathcal{N}(0, \mathbf{R})
+$$
+
+Where \(\mathbf{F}\) is the state transition matrix, \(\mathbf{H}\) is the observation matrix, and \(\mathbf{w}_k, \mathbf{v}_k\) represent Gaussian process and measurement noise distributions.
+
+## 💻 Build & Run
+
+```bash
+python target_tracker.py
 🎯 Relevance to My Goals at Jiangsu University
 Building upon my diploma in Software Engineering (DTS), this project demonstrates my competence in Computer Vision, Image Processing Pipelines, and Automated Object Detection. At Jiangsu University, I plan to extend these capabilities towards AI-driven autonomous UAV visual navigation systems.
 
